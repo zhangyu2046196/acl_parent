@@ -1,0 +1,20 @@
+server:
+  port: 8222
+spring:
+  application:
+    name: service-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848      #nacos服务器地址
+    gateway:
+      discovery:
+        locator:
+          enabled: true           #使用服务发现路由
+      routes:
+        - id: service-acl          # service-acl 路由ID ， 没有固定的规则但是要求唯一，建议配合服务名
+          uri: lb://service-acl   #匹配提供服务的路由地址 uri: http://localhost:8001 指定微服务名称(注册到nacos/eureka上的名称 lb代表负载均衡)
+          predicates:
+            - Path=/*/acl/**      # 具体路由规则
+
+
